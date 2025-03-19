@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-white text-gray-800">
+    <header class="flex justify-between items-center p-4 shadow-md">
+        <h1 class="text-2xl font-bold mr-4">
+            <a href="/" class="hover:text-blue-500">Vinyl Records</a>
+        </h1>
+        <nav class="flex space-x-3 items-center">
+            <ul class="flex space-x-3">
+                <li><a href="/" class="hover:text-blue-500">Главная</a></li>
+                <li><a href="/Home/Products" class="hover:text-blue-500">Товары</a></li>
+                <li><a href="/Home/About" class="hover:text-blue-500">О нас</a></li>
+                <li><a href="/Home/Cart" class="hover:text-blue-500">Корзина</a></li>
+                <li><a href="/Home/Delivery" class="hover:text-blue-500">Доставка</a></li>
+                <li><a href="/Home/Contacts" class="hover:text-blue-500">Контакты</a></li>
+            </ul>
+            <button onclick="toggleModal()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
+                Регистрация
+            </button>
+        </nav>
+    </header>
+
+
+
+    <main class="p-4">
+        @RenderBody()
+    </main>
+
+    <footer class="bg-black text-gray-400 py-4 mt-10">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="text-sm">
+                2025 Vinyl Records Store. Все права защищены.
+            </div>
+
+            <div class="flex space-x-6 text-sm">
+                <a href="#" class="hover:text-white">Условия предоставления услуг</a>
+                <a href="#" class="hover:text-white">Политика конфиденциальности</a>
+                <a href="#" class="hover:text-white">Обзор системы безопасности</a>
+            </div>
+
+            <div class="flex space-x-4">
+                <a href="#" class="hover:text-white">
+                    <img src="~/Content/Images/Facebook.png" alt="Facebook" class="w-6 h-6">
+                </a>
+                <a href="#" class="hover:text-white">
+                    <img src="~/Content/Images/Instagram.jpg" alt="Instagram" class="w-6 h-6">
+                </a>
+                <a href="#" class="hover:text-white">
+                    <img src="~/Content/Images/Twitter.jpg" alt="Twitter" class="w-6 h-6">
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="registerModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 class="text-2xl font-bold mb-4 text-center">Регистрация</h2>
+            <form>
+                <div class="mb-4">
+                    <label for="name" class="block text-gray-700 font-medium">Имя</label>
+                    <input type="text" id="name" name="name" required class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-700 font-medium">Email</label>
+                    <input type="email" id="email" name="email" required class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-700 font-medium">Пароль</label>
+                    <input type="password" id="password" name="password" required class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition">
+                    Зарегистрироваться
+                </button>
+            </form>
+
+            <button onclick="toggleModal()" class="mt-4 text-blue-500 w-full text-center">Закрыть</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleModal() {
+            document.getElementById("registerModal").classList.toggle("hidden");
+        }
+    </script>
+</body>
+</html>

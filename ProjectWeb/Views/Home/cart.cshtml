@@ -1,0 +1,80 @@
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<h2 class="text-2xl font-bold mb-4">Корзина</h2>
+
+<div id="cart-container" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <p>Загрузка...</p>
+</div>
+
+<p id="total-price" class="font-semibold text-lg mt-4">Общая стоимость: $0</p>
+
+<button id="clear-cart" onclick="clearCart()" class="bg-red-500 text-white p-2 rounded mt-4">Очистить корзину</button>
+<button id="checkout" onclick="checkout()" class="bg-green-500 text-white p-2 rounded mt-4">Оформить заказ</button>
+
+<script>
+    function loadCart() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let container = document.getElementById("cart-container");
+        container.innerHTML = "";
+
+        if (cart.length === 0) {
+            container.innerHTML = "<p>Корзина пуста.</p>";
+            return;
+        }
+
+        fetch('/Cart/GetProducts')
+            .then(response => response.json())
+            .then(products => {
+                let total = 0;
+                cart.forEach(productId => {
+                    let item = products.find(p => p.Id === productId);
+                    if (item) {
+                        container.innerHTML += `
+                            <div class="p-4 shadow-lg rounded-lg">
+                                <img src="${item.ImageUrl}" alt="${item.Name}" class="w-full rounded-md">
+                                <h3 class="mt-2 font-semibold">${item.Name}</h3>
+                                <p class="text-gray-600">${item.Artist}</p>
+                                <p class="text-gray-600">$${item.Price}</p>
+                                <button onclick="removeFromCart(${item.Id})" class="text-red-500">Удалить</button>
+                            </div>
+                        `;
+                        total += item.Price;
+                    }
+                });
+
+                document.getElementById("total-price").textContent = `Общая стоимость: $${total}`;
+            })
+            .catch(error => console.error("Ошибка загрузки товаров:", error));
+    }
+
+    function removeFromCart(productId) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        cart = cart.filter(id => id !== productId);
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        loadCart();
+        updateCartCount();
+    }
+
+    function clearCart() {
+        localStorage.removeItem("cart");
+        loadCart();
+        updateCartCount();
+    }
+
+    function checkout() {
+        alert("Заказ оформлен! Спасибо за покупку.");
+        clearCart();
+    }
+
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        document.getElementById("cart-count").textContent = cart.length;
+    }
+
+    loadCart();
+    updateCartCount();
+</script>

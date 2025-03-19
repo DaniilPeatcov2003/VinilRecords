@@ -1,0 +1,87 @@
+@using ProjectWeb.Models
+@using Newtonsoft.Json
+@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Товары - Vinyl Records";
+}
+
+<h2 class="text-2xl font-bold mb-4">Наши виниловые пластинки</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    @foreach (var product in Model)
+    {
+        <div class="p-4 shadow-lg rounded-lg">
+            <img src="@product.ImageUrl" alt="@product.Name" class="w-full rounded-md">
+            <h3 class="mt-2 font-semibold">
+                <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="text-blue-500 hover:underline">
+                    @product.Name
+                </a>
+            </h3>
+            <p class="text-gray-600">@product.Artist</p>
+            <p class="text-gray-600">$@product.Price</p>
+            <button onclick="toggleCart(@product.Id)" class="bg-blue-500 text-white p-2 rounded" id="cart-button-@product.Id">
+                Добавить в корзину
+            </button>
+        </div>
+    }
+</div>
+
+<!-- Модальное окно -->
+<div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+        <h3 id="modal-title" class="text-2xl font-bold"></h3>
+        <p id="modal-artist" class="text-gray-600"></p>
+        <img id="modal-image" class="w-full rounded-md mt-2" />
+        <p id="modal-description" class="mt-4 text-gray-800"></p>
+        <p id="modal-price" class="text-gray-900 font-semibold mt-2"></p>
+        <button onclick="closeModal()" class="bg-red-500 text-white p-2 rounded mt-4">Закрыть</button>
+    </div>
+</div>
+
+<script>
+    let products = @Html.Raw(JsonConvert.SerializeObject(Model ?? new List<Product>()));
+
+    function openModal(productId) {
+        let product = products.find(p => p.Id === productId);
+        if (!product) return;
+
+        document.getElementById("modal-title").textContent = product.Name;
+        document.getElementById("modal-artist").textContent = product.Artist;
+        document.getElementById("modal-image").src = product.ImageUrl;
+        document.getElementById("modal-description").textContent = product.Description;
+        document.getElementById("modal-price").textContent = `$${product.Price}`;
+
+        document.getElementById("product-modal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+        document.getElementById("product-modal").classList.add("hidden");
+    }
+
+    function toggleCart(productId) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        if (cart.includes(productId)) {
+            cart = cart.filter(id => id !== productId);
+            alert("Товар удалён из корзины");
+            document.getElementById(`cart-button-${productId}`).textContent = "Добавить в корзину";
+        } else {
+            cart.push(productId);
+            alert("Товар добавлен в корзину");
+            document.getElementById(`cart-button-${productId}`).textContent = "Удалить из корзины";
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+    }
+
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let cartCountElement = document.getElementById("cart-count");
+        if (cartCountElement) {
+            cartCountElement.textContent = cart.length;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCartCount);
+</script>
