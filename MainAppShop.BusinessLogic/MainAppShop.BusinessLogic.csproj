@@ -43,8 +43,10 @@
   <ItemGroup>
     <Compile Include="BusinessLogic.cs" />
     <Compile Include="Core\User\UserApi.cs" />
+    <Compile Include="ILogic\PaymentBL.cs" />
     <Compile Include="ILogic\ProductBl.cs" />
     <Compile Include="ILogic\UserBL.cs" />
+    <Compile Include="Interface\IPayment.cs" />
     <Compile Include="Interface\IProduct.cs" />
     <Compile Include="Interface\IUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

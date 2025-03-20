@@ -20,13 +20,17 @@
                 <li><a href="/Home/Delivery" class="hover:text-blue-500">Доставка</a></li>
                 <li><a href="/Home/Contacts" class="hover:text-blue-500">Контакты</a></li>
             </ul>
-            <button onclick="toggleModal()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
+            <button id="registerBtn" onclick="toggleRegisterModal()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
                 Регистрация
+            </button>
+            <button id="loginBtn" onclick="toggleLoginModal()" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
+                Войти
+            </button>
+            <button id="logoutBtn" onclick="logout()" class="hidden bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
+                Выйти
             </button>
         </nav>
     </header>
-
-
 
     <main class="p-4">
         @RenderBody()
@@ -43,53 +47,119 @@
                 <a href="#" class="hover:text-white">Политика конфиденциальности</a>
                 <a href="#" class="hover:text-white">Обзор системы безопасности</a>
             </div>
-
-            <div class="flex space-x-4">
-                <a href="#" class="hover:text-white">
-                    <img src="~/Content/Images/Facebook.png" alt="Facebook" class="w-6 h-6">
-                </a>
-                <a href="#" class="hover:text-white">
-                    <img src="~/Content/Images/Instagram.jpg" alt="Instagram" class="w-6 h-6">
-                </a>
-                <a href="#" class="hover:text-white">
-                    <img src="~/Content/Images/Twitter.jpg" alt="Twitter" class="w-6 h-6">
-                </a>
-            </div>
         </div>
     </footer>
 
+    <!-- Регистрация -->
     <div id="registerModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
             <h2 class="text-2xl font-bold mb-4 text-center">Регистрация</h2>
             <form>
                 <div class="mb-4">
-                    <label for="name" class="block text-gray-700 font-medium">Имя</label>
-                    <input type="text" id="name" name="name" required class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                    <label class="block text-gray-700 font-medium">Имя</label>
+                    <input type="text" id="name" required class="w-full p-2 border border-gray-300 rounded-md">
                 </div>
-
                 <div class="mb-4">
-                    <label for="email" class="block text-gray-700 font-medium">Email</label>
-                    <input type="email" id="email" name="email" required class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                    <label class="block text-gray-700 font-medium">Email</label>
+                    <input type="email" id="registerEmail" required class="w-full p-2 border border-gray-300 rounded-md">
                 </div>
-
                 <div class="mb-4">
-                    <label for="password" class="block text-gray-700 font-medium">Пароль</label>
-                    <input type="password" id="password" name="password" required class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                    <label class="block text-gray-700 font-medium">Пароль</label>
+                    <input type="password" id="registerPassword" required class="w-full p-2 border border-gray-300 rounded-md">
                 </div>
-
-                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition">
+                <button type="button" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition">
                     Зарегистрироваться
                 </button>
             </form>
 
-            <button onclick="toggleModal()" class="mt-4 text-blue-500 w-full text-center">Закрыть</button>
+            <button onclick="toggleRegisterModal()" class="mt-4 text-blue-500 w-full text-center">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Вход -->
+    <div id="loginModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 class="text-2xl font-bold mb-4 text-center">Вход</h2>
+            <form>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium">Email</label>
+                    <input type="email" id="loginEmail" required class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium">Пароль</label>
+                    <input type="password" id="loginPassword" required class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+                <button type="button" onclick="login()" class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition">
+                    Войти
+                </button>
+            </form>
+
+            <p class="mt-4 text-center">
+                Нет аккаунта?
+                <a href="#" onclick="switchToRegister()" class="text-blue-500 hover:underline">Зарегистрируйтесь!</a>
+            </p>
+
+            <button onclick="toggleLoginModal()" class="mt-4 text-blue-500 w-full text-center">Закрыть</button>
         </div>
     </div>
 
     <script>
-        function toggleModal() {
+        function toggleLoginModal() {
+            document.getElementById("loginModal").classList.toggle("hidden");
+        }
+
+        function toggleRegisterModal() {
             document.getElementById("registerModal").classList.toggle("hidden");
         }
+
+        function switchToRegister() {
+            document.getElementById("loginModal").classList.add("hidden"); // Закрываем окно входа
+            document.getElementById("registerModal").classList.remove("hidden"); // Открываем окно регистрации
+        }
+
+        function register() {
+            let name = document.getElementById("regName").value;
+            let email = document.getElementById("regEmail").value;
+            let password = document.getElementById("regPassword").value;
+
+            if (name && email && password) {
+                localStorage.setItem(email, JSON.stringify({ name, password }));
+                alert("Регистрация успешна!");
+                toggleRegisterModal();
+            } else {
+                alert("Заполните все поля!");
+            }
+        }
+
+        function login() {
+            let email = document.getElementById("loginEmail").value;
+            let password = document.getElementById("loginPassword").value;
+
+            let user = JSON.parse(localStorage.getItem(email));
+            if (user && user.password === password) {
+                localStorage.setItem("currentUser", email);
+                alert("Вход успешен!");
+                toggleLoginModal();
+                updateAuthUI();
+            } else {
+                alert("Неверные учетные данные!");
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("currentUser");
+            alert("Вы вышли из системы!");
+            updateAuthUI();
+        }
+
+        function updateAuthUI() {
+            let currentUser = localStorage.getItem("currentUser");
+            document.getElementById("loginBtn").classList.toggle("hidden", !!currentUser);
+            document.getElementById("registerBtn").classList.toggle("hidden", !!currentUser);
+            document.getElementById("logoutBtn").classList.toggle("hidden", !currentUser);
+        }
+
+        document.addEventListener("DOMContentLoaded", updateAuthUI);
     </script>
 </body>
 </html>

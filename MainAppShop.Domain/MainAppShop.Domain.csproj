@@ -41,7 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Payment\ReceiptToPay.cs" />
+    <Compile Include="Product\ProductDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\Auth\UserAuthAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MainAppShop.Helper\MainAppShop.Helper.csproj">
@@ -49,5 +52,6 @@
       <Name>MainAppShop.Helper</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

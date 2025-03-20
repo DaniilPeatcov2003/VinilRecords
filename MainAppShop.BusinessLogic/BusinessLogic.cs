@@ -1,4 +1,5 @@
-﻿using MainAppShop.BusinessLogic.ILogic;
+﻿using MainAppShop.BusinessLogic.BLogic;
+using MainAppShop.BusinessLogic.ILogic;
 using MainAppShop.BusinessLogic.Interface;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,11 @@ namespace MainAppShop.BusinessLogic
         public IProduct GetProductBl()
         {
             return new ProductBl();
+        }
+
+        public IPayment GetPaymentBl()
+        {
+            return new PaymentBL();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MainAppShop.Domain.User.Auth;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,9 @@ namespace MainAppShop.BusinessLogic.Interface
 {
     public interface IUser
     {
+        string AuthentificateUser(UserAuthAction auth);
+        int GetUserIdBySessionKey(string sessionKey);
         bool IsSessionValid(string key);
     }
 }
+
