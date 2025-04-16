@@ -1,9 +1,12 @@
 ﻿using ProjectWeb.Models;
+using MainAppShop.BusinessLogic.DBModel.Seed;
+using MainAppShop.Domain.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace ProjectWeb.Controllers
 {
@@ -54,6 +57,70 @@ namespace ProjectWeb.Controllers
         public ActionResult Contacts()
         {
             return View();
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        private UserContext db = new UserContext();
+
+        [HttpPost]
+        public ActionResult Register(string name, string email, string password)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new UDbTable
+                {
+                    Name = name,
+                    Email = email,
+                    Password = password,
+                    LastLogin = DateTime.Now,
+                    LasIp = Request.UserHostAddress,
+                    Level = URole.User
+                };
+
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                // Можно сразу авторизовать и перенаправить
+                FormsAuthentication.SetAuthCookie(user.Name, false);
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(string email, string password)
+        {
+            var user = db.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            if (user != null)
+            {
+                user.LastLogin = DateTime.Now;
+                user.LasIp = Request.UserHostAddress;
+                db.SaveChanges();
+
+                FormsAuthentication.SetAuthCookie(user.Name, false);
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.Message = "Неверный email или пароль.";
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

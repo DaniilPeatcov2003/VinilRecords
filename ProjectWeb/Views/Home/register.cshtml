@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Регистрация";
+}
+
+<h2 class="text-xl font-bold mb-4">Регистрация</h2>
+
+@using (Html.BeginForm("Register", "Home", FormMethod.Post))
+{
+    <div class="mb-4">
+        <label for="name">Имя</label>
+        @Html.TextBox("name", null, new { @class = "border rounded w-full p-2" })
+    </div>
+    <div class="mb-4">
+        <label for="email">Email</label>
+        @Html.TextBox("email", null, new { @class = "border rounded w-full p-2", type = "email" })
+    </div>
+    <div class="mb-4">
+        <label for="password">Пароль</label>
+        @Html.Password("password", null, new { @class = "border rounded w-full p-2" })
+    </div>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Зарегистрироваться</button>
+}
+
