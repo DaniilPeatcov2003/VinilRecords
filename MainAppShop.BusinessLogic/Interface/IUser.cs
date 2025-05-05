@@ -1,4 +1,5 @@
-﻿using MainAppShop.Domain.User.Auth;
+﻿using MainAppShop.BusinessLogic.Core.User;
+using MainAppShop.Domain.User.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace MainAppShop.BusinessLogic.Interface
         string AuthentificateUser(UserAuthAction auth);
         int GetUserIdBySessionKey(string sessionKey);
         bool IsSessionValid(string key);
+        string RegisterUserAction(ULoginData data);
     }
 }
-

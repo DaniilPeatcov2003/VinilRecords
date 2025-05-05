@@ -7,15 +7,31 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.ComponentModel.DataAnnotations;
+using ProjectWeb.Helpers;
 
 namespace ProjectWeb.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
+            // Установка cookie
+            var cookie = new HttpCookie("UserId", "12345");
+            cookie.Expires = DateTime.Now.AddDays(1);
+            cookie.HttpOnly = true;
+            Response.Cookies.Add(cookie);
+
+            // Чтение cookie
+            var userIdCookie = Request.Cookies["UserId"];
+            if (userIdCookie != null)
+            {
+                string userId = userIdCookie.Value;
+            }
+
             return View();
         }
+
 
         public ActionResult Products()
         {
@@ -72,15 +88,23 @@ namespace ProjectWeb.Controllers
         private UserContext db = new UserContext();
 
         [HttpPost]
-        public ActionResult Register(string name, string email, string password)
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var existingUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("Email", "Пользователь с таким email уже существует.");
+                    return View(model); // возвращаем ту же форму с ошибкой
+                }
+
                 var user = new UDbTable
                 {
-                    Name = name,
-                    Email = email,
-                    Password = password,
+                    Name = model.Name,
+                    Email = model.Email,
+                    Password = model.Password,
                     LastLogin = DateTime.Now,
                     LasIp = Request.UserHostAddress,
                     Level = URole.User
@@ -89,38 +113,12 @@ namespace ProjectWeb.Controllers
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                // Можно сразу авторизовать и перенаправить
                 FormsAuthentication.SetAuthCookie(user.Name, false);
+                TempData["SuccessMessage"] = "Регистрация прошла успешно!";
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Login(string email, string password)
-        {
-            var user = db.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
-            if (user != null)
-            {
-                user.LastLogin = DateTime.Now;
-                user.LasIp = Request.UserHostAddress;
-                db.SaveChanges();
-
-                FormsAuthentication.SetAuthCookie(user.Name, false);
-                return RedirectToAction("Index", "Home");
-            }
-
-            ViewBag.Message = "Неверный email или пароль.";
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Logout()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            return View(model);
         }
     }
 }

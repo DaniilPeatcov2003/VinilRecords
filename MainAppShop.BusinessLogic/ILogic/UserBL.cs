@@ -25,5 +25,10 @@ namespace MainAppShop.BusinessLogic.ILogic
         {
             return IsSessionValidAction(key);
         }
+
+        public void Register(ULoginData data)
+        {
+            RegisterUserAction(data);
+        }
     }
 }

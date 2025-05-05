@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ProjectWeb.Models.RegisterViewModel
+
+@{
     ViewBag.Title = "Регистрация";
 }
 
@@ -6,18 +8,25 @@
 
 @using (Html.BeginForm("Register", "Home", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
+
     <div class="mb-4">
-        <label for="name">Имя</label>
-        @Html.TextBox("name", null, new { @class = "border rounded w-full p-2" })
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "border rounded w-full p-2" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-red-500" })
     </div>
+
     <div class="mb-4">
-        <label for="email">Email</label>
-        @Html.TextBox("email", null, new { @class = "border rounded w-full p-2", type = "email" })
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email, new { @class = "border rounded w-full p-2", type = "email" })
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-red-500" })
     </div>
+
     <div class="mb-4">
-        <label for="password">Пароль</label>
-        @Html.Password("password", null, new { @class = "border rounded w-full p-2" })
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password, new { @class = "border rounded w-full p-2" })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-red-500" })
     </div>
+
     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Зарегистрироваться</button>
 }
-

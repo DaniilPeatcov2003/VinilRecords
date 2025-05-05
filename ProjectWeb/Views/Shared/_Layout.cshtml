@@ -27,23 +27,19 @@
             </ul>
 
             @{
-                if (User.Identity.IsAuthenticated)
-                {
-                    <span class="text-sm text-gray-700 mr-2">Привет, @User.Identity.Name!</span>
-                    using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { @class = "inline" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
-                            Выйти
-                        </button>
-                    }
-                }
-                else
-                {
-                    <a href="@Url.Action("Register", "Home")" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Регистрация</a>
-                    <a href="@Url.Action("Login", "Home")" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">Войти</a>
-                }
+                bool isLoggedIn = ViewBag.IsLoggedIn != null && (bool)ViewBag.IsLoggedIn;
             }
+            @if (isLoggedIn)
+            {
+                <span class="text-sm text-gray-700 mr-2">Здравствуйте, @ViewBag.Login!</span>
+                <a href="#" onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Выйти</a>
+            }
+            else
+            {
+                <a href="@Url.Action("Register", "Home")" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Регистрация</a>
+                <a href="@Url.Action("Login", "Home")" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">Войти</a>
+            }
+
 
         </nav>
     </header>
@@ -64,5 +60,12 @@
             </div>
         </div>
     </footer>
+    <script>
+        function logout() {
+            localStorage.removeItem("login");
+            localStorage.removeItem("password");
+            window.location.href = "/Account/Logout";
+        }
+    </script>
 </body>
 </html>

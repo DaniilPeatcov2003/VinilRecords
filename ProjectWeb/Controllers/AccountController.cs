@@ -1,81 +1,88 @@
-﻿using MainAppShop.BusinessLogic.DBModel.Seed;
+﻿using AutoMapper;
+using MainAppShop.BusinessLogic.Core.User;
+using MainAppShop.BusinessLogic.ILogic;
+using MainAppShop.BusinessLogic.DBModel.Seed;
+using MainAppShop.BusinessLogic.Interface;
 using MainAppShop.Domain.Entities.User;
+using ProjectWeb.Models;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Security;
+using MainAppShop.Domain.User.Auth;
+using System.Web;
 
 namespace ProjectWeb.Controllers
 {
     public class AccountController : Controller
     {
-        private UserContext db = new UserContext();
+        private readonly UserContext db = new UserContext();
 
         [HttpGet]
-        public ActionResult Login() => View();
+        public ActionResult Login()
+        {
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(string email, string password)
+        public ActionResult Login(string login, string password)
         {
-            var hashedPassword = HashPassword(password);
-            var user = db.Users.FirstOrDefault(u => u.Email == email && u.Password == hashedPassword);
+            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+            {
+                ViewBag.Error = "Введите логин и пароль.";
+                return View();
+            }
 
+            var user = db.Users.FirstOrDefault(u => u.Email == login && u.Password == password);
             if (user != null)
             {
                 FormsAuthentication.SetAuthCookie(user.Email, false);
+                TempData["SuccessMessage"] = "Вы успешно вошли в систему!"; ;
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewBag.ErrorMessage = "Неверный email или пароль.";
+            ViewBag.Error = "Неверный логин или пароль.";
             return View();
         }
 
         [HttpGet]
-        public ActionResult Register() => View();
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(UDbTable model)
+        public ActionResult Register()
         {
-            if (db.Users.Any(u => u.Email == model.Email))
-            {
-                ModelState.AddModelError("Email", "Пользователь с таким email уже существует.");
-            }
-
-            if (ModelState.IsValid)
-            {
-                model.Password = HashPassword(model.Password);
-                model.LastLogin = DateTime.Now;
-                model.Level = URole.User;
-                db.Users.Add(model);
-                db.SaveChanges();
-
-                FormsAuthentication.SetAuthCookie(model.Email, false);
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View(model);
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public ActionResult Register(string login, string password, string name)
+        {
+            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+            {
+                ViewBag.Error = "Введите логин и пароль.";
+                return View();
+            }
+
+            var userExists = db.Users.Any(u => u.Email == login);
+            if (userExists)
+            {
+                ViewBag.Error = "Пользователь уже существует.";
+                return View();
+            }
+
+            var newUser = new UDbTable { Email = login, Password = password, Level = URole.User };
+            db.Users.Add(newUser);
+            db.SaveChanges();
+
+            FormsAuthentication.SetAuthCookie(newUser.Email, false);
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
-        }
-
-        private string HashPassword(string password)
-        {
-            using (var sha = SHA256.Create())
-            {
-                var bytes = Encoding.UTF8.GetBytes(password);
-                var hash = sha.ComputeHash(bytes);
-                return Convert.ToBase64String(hash);
-            }
         }
     }
 }
