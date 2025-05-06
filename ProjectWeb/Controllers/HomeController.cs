@@ -88,10 +88,17 @@ namespace ProjectWeb.Controllers
 
         private UserContext db = new UserContext();
 
-        [Authorize(Roles = "Admin")]
-        public ActionResult AdminPanel()
+        [RoleAuthorize("Admin")]
+        public ActionResult AdminDashboard()
         {
-            return View("admindasboard");
+            return View("~/Views/Home/AdminDashboard.cshtml");
+        }
+
+        [RoleAuthorize("User", "Admin")]
+        public ActionResult UserDashboard()
+        {
+            ViewBag.Login = User.Identity.Name;
+            return View("~/Views/Home/UserDashboard.cshtml");
         }
     }
 }

@@ -51,6 +51,7 @@ namespace ProjectWeb.Controllers
         [RoleAuthorize("User", "Admin")]
         public ActionResult UserDashboard()
         {
+            ViewBag.Login = User.Identity.Name;
             return View("~/Views/Home/UserDashboard.cshtml");
         }
 
