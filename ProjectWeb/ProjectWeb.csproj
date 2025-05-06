@@ -118,6 +118,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Filters\RoleAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -143,6 +144,8 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Home\register.cshtml" />
     <Content Include="Views\Home\login.cshtml" />
+    <Content Include="Views\Home\userdashboard.cshtml" />
+    <Content Include="Views\Home\admindashboard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

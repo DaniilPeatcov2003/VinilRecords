@@ -31,10 +31,9 @@ namespace ProjectWeb
             HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
             if (authCookie != null)
             {
-                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                string[] roles = new string[] { };
-                GenericPrincipal userPrincipal = new GenericPrincipal(new GenericIdentity(authTicket.Name), roles);
-                HttpContext.Current.User = userPrincipal;
+                FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+                string[] roles = ticket.UserData.Split(',');
+                HttpContext.Current.User = new GenericPrincipal(new GenericIdentity(ticket.Name), roles);
             }
         }
     }

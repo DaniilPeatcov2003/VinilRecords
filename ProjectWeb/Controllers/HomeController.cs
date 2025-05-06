@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.ComponentModel.DataAnnotations;
 using ProjectWeb.Helpers;
+using ProjectWeb.Filters;
 
 namespace ProjectWeb.Controllers
 {
@@ -87,38 +88,10 @@ namespace ProjectWeb.Controllers
 
         private UserContext db = new UserContext();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel model)
+        [Authorize(Roles = "Admin")]
+        public ActionResult AdminPanel()
         {
-            if (ModelState.IsValid)
-            {
-                var existingUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
-                if (existingUser != null)
-                {
-                    ModelState.AddModelError("Email", "Пользователь с таким email уже существует.");
-                    return View(model); // возвращаем ту же форму с ошибкой
-                }
-
-                var user = new UDbTable
-                {
-                    Name = model.Name,
-                    Email = model.Email,
-                    Password = model.Password,
-                    LastLogin = DateTime.Now,
-                    LasIp = Request.UserHostAddress,
-                    Level = URole.User
-                };
-
-                db.Users.Add(user);
-                db.SaveChanges();
-
-                FormsAuthentication.SetAuthCookie(user.Name, false);
-                TempData["SuccessMessage"] = "Регистрация прошла успешно!";
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View(model);
+            return View("admindasboard");
         }
     }
 }

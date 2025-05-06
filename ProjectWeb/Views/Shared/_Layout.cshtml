@@ -1,8 +1,11 @@
 ﻿@using System.Web.Security
 @using System.Web.Mvc
 @{
-    var username = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+    var isLoggedIn = User.Identity.IsAuthenticated;
+    var login = User.Identity.Name;
+    var role = Request.Cookies["UserInfo"]?["Role"];
 }
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -21,26 +24,33 @@
                 <li><a href="/" class="hover:text-blue-500">Главная</a></li>
                 <li><a href="/Home/Products" class="hover:text-blue-500">Товары</a></li>
                 <li><a href="/Home/About" class="hover:text-blue-500">О нас</a></li>
-                <li><a href="/Home/Cart" class="hover:text-blue-500">Корзина</a></li>
+                @if (role != "Admin")
+                {
+                    <li><a href="/Home/Cart" class="hover:text-blue-500">Корзина</a></li>
+                }
                 <li><a href="/Home/Delivery" class="hover:text-blue-500">Доставка</a></li>
                 <li><a href="/Home/Contacts" class="hover:text-blue-500">Контакты</a></li>
             </ul>
 
-            @{
-                bool isLoggedIn = ViewBag.IsLoggedIn != null && (bool)ViewBag.IsLoggedIn;
-            }
             @if (isLoggedIn)
             {
-                <span class="text-sm text-gray-700 mr-2">Здравствуйте, @ViewBag.Login!</span>
+                <span class="text-sm text-gray-700 mr-2">Здравствуйте, @login!</span>
                 <a href="#" onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Выйти</a>
             }
             else
             {
-                <a href="@Url.Action("Register", "Home")" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Регистрация</a>
-                <a href="@Url.Action("Login", "Home")" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">Войти</a>
+                <a href="@Url.Action("Register", "Account")" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Регистрация</a>
+                <a href="@Url.Action("Login", "Account")" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">Войти</a>
             }
 
-
+            @if (role == "Admin")
+            {
+                <a href="@Url.Action("AdminDashboard", "Account")" class="text-sm ml-2 underline text-red-500">Панель администратора</a>
+            }
+            @if (role == "User" || role == "Admin")
+            {
+                <a href="@Url.Action("UserDashboard", "Account")" class="text-sm ml-2 underline text-blue-500">Личный кабинет</a>
+            }
         </nav>
     </header>
 
@@ -60,6 +70,7 @@
             </div>
         </div>
     </footer>
+
     <script>
         function logout() {
             localStorage.removeItem("login");
