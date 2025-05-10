@@ -111,6 +111,7 @@
     <Compile Include="AuthHelper.cs" />
     <Compile Include="AuthorizeRoleAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -140,12 +141,16 @@
     <Content Include="Views\Home\about.cshtml" />
     <Content Include="Views\Home\delivery.cshtml" />
     <Content Include="Views\Home\contacts.cshtml" />
-    <Content Include="Views\Home\details.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Home\register.cshtml" />
     <Content Include="Views\Home\login.cshtml" />
     <Content Include="Views\Home\userdashboard.cshtml" />
     <Content Include="Views\Home\admindashboard.cshtml" />
+    <Content Include="Views\Admin\create.cshtml" />
+    <Content Include="Views\Admin\edit.cshtml" />
+    <Content Include="Views\Admin\products.cshtml" />
+    <Content Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <Content Include="Views\Home\details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

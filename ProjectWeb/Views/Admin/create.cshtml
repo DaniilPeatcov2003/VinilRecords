@@ -1,0 +1,59 @@
+﻿@model MainAppShop.Domain.Entities.User.Product
+@{
+    ViewBag.Title = "Добавить товар";
+}
+
+<h2 class="text-2xl font-bold mb-4">Добавить товар</h2>
+
+@using (Html.BeginForm("Create", "Admin", FormMethod.Post, new { @class = "space-y-4" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "block font-medium" })
+        @Html.TextBoxFor(model => model.Name, new { @class = "w-full border rounded p-2" })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-red-500 text-sm" })
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Artist, htmlAttributes: new { @class = "block font-medium" })
+        @Html.TextBoxFor(model => model.Artist, new { @class = "w-full border rounded p-2" })
+        @Html.ValidationMessageFor(model => model.Artist, "", new { @class = "text-red-500 text-sm" })
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "block font-medium" })
+        @Html.TextBoxFor(model => model.Price, new { type = "number", step = "0.01", @class = "w-full border rounded p-2" })
+        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-red-500 text-sm" })
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.ImageUrl, htmlAttributes: new { @class = "block font-medium" })
+        @Html.TextBoxFor(model => model.ImageUrl, new { @class = "w-full border rounded p-2" })
+        @Html.ValidationMessageFor(model => model.ImageUrl, "", new { @class = "text-red-500 text-sm" })
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "block font-medium" })
+        @Html.TextAreaFor(model => model.Description, 4, 50, new { @class = "w-full border rounded p-2" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-red-500 text-sm" })
+    </div>
+
+    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Добавить</button>
+    <a href="@Url.Action("Products", "Admin")" class="ml-2 text-gray-600 hover:underline">Назад</a>
+}
+
+
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="text-red-500 mb-4">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}

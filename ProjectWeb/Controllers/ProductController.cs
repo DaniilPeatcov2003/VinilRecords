@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web.Mvc;
 using MainAppShop.BusinessLogic;
+using MainAppShop.BusinessLogic.DBModel.Seed;
 using MainAppShop.BusinessLogic.Interface;
 using ProjectWeb.Models;
 
@@ -10,6 +11,7 @@ namespace ProjectWeb.Controllers
 {
     public class ProductController : Controller
     {
+        private UserContext db = new UserContext();
         private readonly IProduct _product;
         public ProductController() {
             var bl = new BusinessLogic();
@@ -35,20 +37,6 @@ namespace ProjectWeb.Controllers
         public ActionResult Index()
         {
             return View(products);
-        }
-
-        // Детальная страница товара
-        public ActionResult Details(int id)
-        {
-            if (!_product.IsProductValid(id))
-            {
-                return View();
-            }
-            var product = products.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-                return HttpNotFound();
-
-            return View("~/Views/Home/details.cshtml", product);
         }
     }
 }

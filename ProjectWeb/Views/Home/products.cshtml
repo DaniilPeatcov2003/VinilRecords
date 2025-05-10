@@ -1,6 +1,6 @@
-@using ProjectWeb.Models
+@using MainAppShop.Domain.Entities.User
 @using Newtonsoft.Json
-@model IEnumerable<Product>
+@model IEnumerable<MainAppShop.Domain.Entities.User.Product>
 
 @{
     ViewData["Title"] = "Товары - Vinyl Records";
@@ -13,7 +13,7 @@
         <div class="p-4 shadow-lg rounded-lg">
             <img src="@product.ImageUrl" alt="@product.Name" class="w-full rounded-md">
             <h3 class="mt-2 font-semibold">
-                <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="text-blue-500 hover:underline">
+                <a href="@Url.Action("Details", "Home", new { id = product.Id })" class="text-blue-500 hover:underline">
                     @product.Name
                 </a>
             </h3>
@@ -39,7 +39,7 @@
 </div>
 
 <script>
-    let products = @Html.Raw(JsonConvert.SerializeObject(Model ?? new List<Product>()));
+    let products = @Html.Raw(JsonConvert.SerializeObject(Model ?? new List<MainAppShop.Domain.Entities.User.Product>()));
 
     function openModal(productId) {
         let product = products.find(p => p.Id === productId);

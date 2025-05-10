@@ -46,6 +46,7 @@
             @if (role == "Admin")
             {
                 <a href="@Url.Action("AdminDashboard", "Account")" class="text-sm ml-2 underline text-red-500">Панель администратора</a>
+                <a href="@Url.Action("Products", "Admin")" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition">Управление товарами</a>
             }
             @if (role == "User" || role == "Admin")
             {
@@ -78,5 +79,6 @@
             window.location.href = "/Account/Logout";
         }
     </script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

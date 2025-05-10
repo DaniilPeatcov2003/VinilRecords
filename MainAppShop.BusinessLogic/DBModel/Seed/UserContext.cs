@@ -15,5 +15,6 @@ namespace MainAppShop.BusinessLogic.DBModel.Seed
         {
         }
         public virtual DbSet<UDbTable> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }

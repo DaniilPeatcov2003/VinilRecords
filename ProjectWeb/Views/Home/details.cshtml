@@ -1,6 +1,5 @@
-@using ProjectWeb.Models
+п»ї@using MainAppShop.Domain.Entities.User
 @model Product
-
 @{
     ViewData["Title"] = Model.Name;
 }
@@ -13,17 +12,15 @@
     <p class="mt-4">@Model.Description</p>
 
     <button onclick="addToCart(@Model.Id)" class="bg-blue-500 text-white p-2 rounded mt-4">
-        Добавить в корзину
+        Р”РѕР±Р°РІРёС‚СЊ РІ РєРѕСЂР·РёРЅСѓ
     </button>
 </div>
 
-<script>
-    function addToCart(productId) {
+<script>function addToCart(productId) {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
         if (!cart.includes(productId)) {
             cart.push(productId);
             localStorage.setItem("cart", JSON.stringify(cart));
-            alert("Товар добавлен в корзину!");
+            alert("РўРѕРІР°СЂ РґРѕР±Р°РІР»РµРЅ РІ РєРѕСЂР·РёРЅСѓ!");
         }
-    }
-</script>
+    }</script>
