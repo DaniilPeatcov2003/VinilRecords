@@ -7,6 +7,11 @@
 }
 
 <h2 class="text-2xl font-bold mb-4">Наши виниловые пластинки</h2>
+<form method="get" action="@Url.Action("Products", "Home")" class="mb-4">
+    <input type="text" name="searchQuery" placeholder="Поиск по названию или исполнителю"
+           value="@Request.QueryString["searchQuery"]" class="p-2 border rounded" />
+    <button type="submit" class="p-2 bg-blue-500 text-white rounded">Найти</button>
+</form>
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     @foreach (var product in Model)
     {
@@ -19,9 +24,12 @@
             </h3>
             <p class="text-gray-600">@product.Artist</p>
             <p class="text-gray-600">$@product.Price</p>
+            @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+            {
             <button onclick="toggleCart(@product.Id)" class="bg-blue-500 text-white p-2 rounded" id="cart-button-@product.Id">
                 Добавить в корзину
             </button>
+            }
         </div>
     }
 </div>

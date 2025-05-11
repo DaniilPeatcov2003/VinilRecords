@@ -1,0 +1,34 @@
+﻿@model List<MainAppShop.Domain.Entities.User.UDbTable>
+
+@{
+    ViewBag.Title = "Список пользователей";
+}
+
+<h2 class="text-xl font-bold mb-4">Список пользователей</h2>
+
+<table class="w-full table-auto border-collapse border border-gray-300">
+    <thead>
+        <tr class="bg-gray-100">
+            <th class="border px-4 py-2">ID</th>
+            <th class="border px-4 py-2">Логин</th>
+            <th class="border px-4 py-2">Роль</th>
+            <th class="border px-4 py-2">Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var users in Model)
+        {
+            <tr>
+                <td class="border px-4 py-2">@users.Id</td>
+                <td class="border px-4 py-2">@users.Email</td>
+                <td class="border px-4 py-2">@users.Level</td>
+                <td class="border px-4 py-2">
+                    <form method="post" action="@Url.Action("DeleteUser", "Admin")" onsubmit="return confirm('Удалить пользователя?');">
+                        <input type="hidden" name="id" value="@users.Id" />
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

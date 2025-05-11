@@ -10,12 +10,14 @@
 
     <div class="mb-4">
         <label>Логин:</label>
-        <input type="text" name="login" required class="border rounded w-full p-2" />
+        <input type="text" name="login" required class="border rounded w-full p-2"
+               value="@(ViewBag.LoginFailed == true ? "" : Request.Form["login"])" />
     </div>
     <div class="mb-4">
         <label>Пароль:</label>
-        <input type="password" name="password" required class="border rounded w-full p-2" />
+        <input type="password" name="password" required class="border rounded w-full p-2" value="" />
     </div>
+
     <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Войти</button>
 }
 

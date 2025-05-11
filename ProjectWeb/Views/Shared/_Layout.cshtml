@@ -24,7 +24,7 @@
                 <li><a href="/" class="hover:text-blue-500">Главная</a></li>
                 <li><a href="/Home/Products" class="hover:text-blue-500">Товары</a></li>
                 <li><a href="/Home/About" class="hover:text-blue-500">О нас</a></li>
-                @if (role != "Admin")
+                @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
                 {
                     <li><a href="/Home/Cart" class="hover:text-blue-500">Корзина</a></li>
                 }
@@ -45,10 +45,17 @@
 
             @if (role == "Admin")
             {
-                <a href="@Url.Action("AdminDashboard", "Account")" class="text-sm ml-2 underline text-red-500">Панель администратора</a>
-                <a href="@Url.Action("Products", "Admin")" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition">Управление товарами</a>
+                <div class="relative">
+                    <button onclick="toggleAdminMenu()" class="text-sm ml-2 underline text-red-500">Панель администратора</button>
+                    <div id="adminMenu" class="hidden absolute bg-white shadow-lg rounded mt-1 z-50 border border-gray-200">
+                        <a href="@Url.Action("AdminDashboard", "Admin")" class="block px-4 py-2 text-black hover:bg-gray-100">Обзор</a>
+                        <a href="@Url.Action("Products", "Admin")" class="block px-4 py-2 text-black hover:bg-gray-100">Управление товарами</a>
+                        <a href="@Url.Action("UserList", "Admin")" class="block px-4 py-2 text-black hover:bg-gray-100">Список пользователей</a>
+                    </div>
+                </div>
             }
-            @if (role == "User" || role == "Admin")
+
+            @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
             {
                 <a href="@Url.Action("UserDashboard", "Account")" class="text-sm ml-2 underline text-blue-500">Личный кабинет</a>
             }
@@ -80,5 +87,22 @@
         }
     </script>
     @RenderSection("Scripts", required: false)
+    <script>
+        function toggleAdminMenu() {
+            const menu = document.getElementById('adminMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // При клике вне меню — закрываем его
+        document.addEventListener('click', function (e) {
+            const menu = document.getElementById('adminMenu');
+            const button = document.querySelector('button[onclick="toggleAdminMenu()"]');
+
+            if (!menu.contains(e.target) && !button.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+
 </body>
 </html>

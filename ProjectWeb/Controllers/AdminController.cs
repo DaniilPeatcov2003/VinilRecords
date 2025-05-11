@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using ProjectWeb.Filters;
 
 namespace ProjectWeb.Controllers
 {
@@ -27,10 +28,18 @@ namespace ProjectWeb.Controllers
             return View();
         }
 
-        public ActionResult Products()
+        public ActionResult Products(string searchTerm = null)
         {
-            var products = db.Products.ToList();
-            return View(products);
+            var products = db.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                products = products.Where(p =>
+                    p.Name.Contains(searchTerm) ||
+                    p.Artist.Contains(searchTerm));
+            }
+
+            return View(products.ToList());
         }
 
         public ActionResult Create()
@@ -94,6 +103,31 @@ namespace ProjectWeb.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("Products");
+        }
+
+        [RoleAuthorize("Admin")]
+        public ActionResult AdminDashboard()
+        {
+            return View("~/Views/Admin/AdminDashboard.cshtml");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteUser(int id)
+        {
+            var user = db.Users.Find(id);
+            if (user != null)
+            {
+                db.Users.Remove(user);
+                db.SaveChanges();
+            }
+            return RedirectToAction("UserList");
+        }
+
+
+        public ActionResult UserList()
+        {
+            var users = db.Users.ToList();
+            return View(users);
         }
     }
 }

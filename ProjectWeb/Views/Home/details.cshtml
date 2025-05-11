@@ -10,11 +10,13 @@
     <p class="text-gray-600">@Model.Artist</p>
     <p class="text-gray-800 font-semibold">$@Model.Price</p>
     <p class="mt-4">@Model.Description</p>
-
-    <button onclick="addToCart(@Model.Id)" class="bg-blue-500 text-white p-2 rounded mt-4">
-        Добавить в корзину
-    </button>
-</div>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+    {
+        <button onclick="addToCart(@Model.Id)" class="bg-blue-500 text-white p-2 rounded mt-4">
+            Добавить в корзину
+        </button>
+    }
+    </div>
 
 <script>function addToCart(productId) {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];

@@ -4,6 +4,12 @@
 }
 
 <h2 class="text-2xl font-bold mb-4">Управление товарами</h2>
+<!-- Форма поиска -->
+<form method="get" action="@Url.Action("Products", "Admin")" class="mb-4">
+    <input type="text" name="searchTerm" value="@Request["searchTerm"]" placeholder="Поиск по названию или артисту"
+           class="border p-2 rounded w-64" />
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Поиск</button>
+</form>
 <a href="@Url.Action("Create", "Admin")" class="bg-green-500 text-white px-4 py-2 rounded mb-4 inline-block">Добавить товар</a>
 
 <table class="min-w-full bg-white border">

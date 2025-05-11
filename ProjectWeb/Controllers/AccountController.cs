@@ -34,18 +34,12 @@ namespace ProjectWeb.Controllers
                 ViewBag.Login = login;
 
                 if (role == "Admin")
-                    return View("~/Views/Home/AdminDashboard.cshtml");
+                    return View("~/Views/Admin/AdminDashboard.cshtml");
                 else if (role == "User")
                     return View("~/Views/Home/UserDashboard.cshtml");
             }
 
             return RedirectToAction("Login");
-        }
-
-        [RoleAuthorize("Admin")]
-        public ActionResult AdminDashboard()
-        {
-            return View("~/Views/Home/AdminDashboard.cshtml");
         }
 
         [RoleAuthorize("User", "Admin")]

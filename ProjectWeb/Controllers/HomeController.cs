@@ -36,14 +36,14 @@ namespace ProjectWeb.Controllers
         }
 
 
-        public ActionResult Products()
+        public ActionResult Products(string searchQuery)
         {
             // Если в базе нет товаров, добавим их
             if (!db.Products.Any())
             {
 
                 var newProducts = new List<MainAppShop.Domain.Entities.User.Product>
-                {   
+                {
                 new MainAppShop.Domain.Entities.User.Product { Id = 1, Name = "Гранатовый альбом", Artist = "Сплин", ImageUrl = "/Content/Images/album1.jpg", Price = 20, Description = "«Гранатовый альбом» — четвёртый студийный альбом российской рок-группы «Сплин», вышедший 1 апреля 1998 года; после него группа приобрела популярность по всей России. Альбом записан в феврале-марте 1998 года в студии «SBI Records». Список композиций: 1.\t«Весь этот бред»\t\n2.\t«Достань гранату»\t\n3.\t«Орбит без сахара»\t\n4.\t«Приходи»\t\n5.\t«Свет горел всю ночь»\t\n6.\t«Люся сидит дома»\t\n7.\t«Бог устал нас любить»\t\n8.\t«Катись, колесо!»\t\n9.\t«Выхода нет»\t\n10.\t«Коктейли третьей мировой»\t\n11.\t«Джим»\t\n12.\t«Мария и Хуана»" },
                 new MainAppShop.Domain.Entities.User.Product { Id = 2, Name = "Горизонт событий", Artist = "Би-2", ImageUrl = "/Content/Images/album2.jpg", Price = 25, Description = "«Горизонт событий» — десятый студийный альбом российской рок-группы «Би-2», вышедший в 2017 году. Список композиций: 1.\t«Лётчик»\r\n2.\t«Чёрное солнце»\r\n3.\t«Тема века»\r\n4.\t«Детство»\r\n5.\t«Философский камень»\r\n6.\t«Лайки»\r\n7.\t«Виски» (feat. Джон Грант)\r\n8.\t«Пора возвращаться домой» (feat. Oxxxymiron)\r\n9.\t«Пофигу»\r\n10.\t«Алиса»\r\n11.\t«Родина»"},
                 new MainAppShop.Domain.Entities.User.Product { Id = 3, Name = "Всё что вокруг", Artist = "Нервы", ImageUrl = "/Content/Images/album3.jpg", Price = 18, Description = "«Всё, что вокруг» — дебютный альбом рок-группы «Нервы», выпущенный 1 января 2012 года. В альбом вошло 18 композиций в стиле подросткового пост-панка и поп-рока. Список композиций: 1. \r\nНервы\r\n2. \r\nБей моё сердце\r\n3. \r\nА А А\r\n4. \r\nБатареи \r\n5. \r\nСлишком влюблён\r\n6. \r\nКурим \r\n7. \r\nВолшебная\r\n8. \r\nБудем друзьями\r\n9. \r\nГлупая \r\n10. \r\nАватар \r\n11. \r\nБудет легче \r\n12. \r\nВклочья \r\n13. \r\nЯ её люблю \r\n14. \r\nКофе мой друг \r\n15. \r\nМуза \r\n16. \r\nЕё имя \r\n17. \r\nMy Lady \r\n18. \r\nНечего терять"},
@@ -62,18 +62,14 @@ namespace ProjectWeb.Controllers
                 db.SaveChanges();
             }
 
-            var products = db.Products.ToList();
-            var viewModel = products.Select(p => new MainAppShop.Domain.Entities.User.Product
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Artist = p.Artist,
-                ImageUrl = p.ImageUrl,
-                Price = p.Price,
-                Description = p.Description,
-            }).ToList();
+            var products = db.Products.AsQueryable();
 
-            return View(viewModel);
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                products = products.Where(p => p.Name.Contains(searchQuery) || p.Artist.Contains(searchQuery));
+            }
+
+            return View(products.ToList());
         }
 
 
@@ -125,12 +121,6 @@ namespace ProjectWeb.Controllers
         {
             var products = db.Products.ToList();
             return View(products);
-        }
-
-        [RoleAuthorize("Admin")]
-        public ActionResult AdminDashboard()
-        {
-            return View("~/Views/Home/AdminDashboard.cshtml");
         }
 
         [RoleAuthorize("User", "Admin")]
