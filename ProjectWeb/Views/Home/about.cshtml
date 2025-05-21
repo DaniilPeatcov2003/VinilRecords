@@ -2,32 +2,52 @@
     ViewData["Title"] = "О нас - Vinyl Records";
 }
 
-<h2 class="text-3xl font-bold mb-4">О нас</h2>
-<p class="text-gray-700">
-    Добро пожаловать в <strong>Vinyl Records</strong> – ваш лучший источник редких и классических виниловых пластинок.
-    Мы предлагаем широкий выбор музыкальных альбомов, от легендарных исполнителей до современных хитов.
-</p>
+<div class="space-y-10">
 
-<h2 class="text-2xl font-bold mb-2">Наша история</h2>
-<p class="text-gray-700">
-    Наша любовь к винилу началась много лет назад. Мы начали с небольшой коллекции классических пластинок и со временем
-    превратились в полноценный магазин, который радует клиентов качественными релизами со всего мира.
-</p>
+    <!-- Блок "О нас" по центру -->
+    <section class="bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 p-6 rounded-xl shadow-md max-w-3xl mx-auto text-center">
+        <h2 class="text-4xl font-extrabold text-gray-800 mb-4">О нас</h2>
+        <p class="text-gray-800 text-lg">
+            Добро пожаловать в <strong class="text-purple-700">Vinyl Records</strong> – ваш лучший источник редких и классических виниловых пластинок.
+            Мы предлагаем широкий выбор музыкальных альбомов — от легендарных исполнителей до современных хитов.
+        </p>
+    </section>
 
-<h2 class="text-2xl font-bold mb-2">Миссия и ценности</h2>
-<ul class="list-disc pl-6 text-gray-700">
-    <li>Сохранять культуру аналогового звука</li>
-    <li>Помогать меломанам находить редкие издания</li>
-    <li>Обеспечивать высокое качество сервиса</li>
-</ul>
+    <!-- Блоки "Наша история" и "Миссия и ценности" в одном ряду -->
+    <div class="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
 
-<h2 class="text-2xl font-bold mb-2">Отзывы клиентов</h2>
-<div class="bg-gray-100 p-4 rounded-lg">
-    <p class="italic">"Лучший магазин винила! Доставили быстро, качество на высоте!"</p>
-    <p class="text-right text-sm text-gray-600">– Анна К.</p>
+        <!-- Миссия и ценности — слева -->
+        <section class="flex-1 bg-purple-50 p-6 rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-purple-800 mb-3">Миссия и ценности</h2>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700 text-base">
+                <li><span class="text-purple-600 font-medium">Сохранять</span> культуру аналогового звука</li>
+                <li><span class="text-purple-600 font-medium">Помогать</span> меломанам находить редкие издания</li>
+                <li><span class="text-purple-600 font-medium">Обеспечивать</span> высокое качество сервиса</li>
+            </ul>
+        </section>
+
+        <!-- Наша история — справа -->
+        <section class="flex-1 bg-white border-l-8 border-purple-300 p-6 rounded-lg shadow">
+            <h2 class="text-2xl font-bold text-purple-800 mb-3">Наша история</h2>
+            <p class="text-gray-700 text-base leading-relaxed">
+                Наша любовь к винилу началась много лет назад. Мы начали с небольшой коллекции классических пластинок и со временем
+                превратились в полноценный магазин, который радует клиентов качественными релизами со всего мира.
+            </p>
+        </section>
+
+    </div>
+
+    <!-- Отзывы -->
+    <section class="bg-gradient-to-br from-purple-200 to-pink-200 p-6 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold text-purple-900 mb-4">Отзывы клиентов</h2>
+        <div class="bg-white p-4 rounded-lg shadow mb-4">
+            <p class="italic text-gray-700">"Лучший магазин винила! Доставили быстро, качество на высоте!"</p>
+            <p class="text-right text-sm text-purple-600 mt-2">– Анна К.</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow">
+            <p class="italic text-gray-700">"Нашел здесь пластинку, которую искал годами. Спасибо!"</p>
+            <p class="text-right text-sm text-purple-600 mt-2">– Сергей М.</p>
+        </div>
+    </section>
+
 </div>
-<div class="bg-gray-100 p-4 rounded-lg mt-4">
-    <p class="italic">"Нашел здесь пластинку, которую искал годами. Спасибо!"</p>
-    <p class="text-right text-sm text-gray-600">– Сергей М.</p>
-</div>
-
