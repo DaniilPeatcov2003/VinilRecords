@@ -6,56 +6,67 @@
     <h2 class="text-3xl font-bold mb-8 text-teal-700 text-center">Доставка и Оплата</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Оплата слева -->
-        <div class="bg-purple-100 p-6 rounded-xl shadow-md">
-            <h3 class="text-2xl font-bold mb-4 text-purple-800">Оплата</h3>
-            <ul class="space-y-3 text-purple-800">
-                <li class="flex items-start">
-                    <svg class="w-6 h-6 text-purple-600 flex-shrink-0 mr-3 mt-1" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Картой онлайн (VISA, MasterCard)
-                </li>
-                <li class="flex items-start">
-                    <svg class="w-6 h-6 text-purple-600 flex-shrink-0 mr-3 mt-1" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    При получении (наличными или картой)
-                </li>
-            </ul>
-        </div>
-
-        <!-- Доставка справа (такой же стиль, как и у оплаты) -->
+        <!-- Доставка слева -->
         <div class="bg-purple-100 p-6 rounded-xl shadow-md">
             <h3 class="text-2xl font-bold mb-4 text-purple-800">Доставка</h3>
             <ul class="space-y-3 text-purple-800">
                 <li class="flex items-start">
-                    <svg class="w-6 h-6 text-purple-600 flex-shrink-0 mr-3 mt-1" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    <svg class="w-6 h-6 text-purple-600 mr-3 mt-1" fill="none" stroke="currentColor" stroke-width="3"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                     Курьерская доставка – 2-3 дня, от 300 lei
                 </li>
                 <li class="flex items-start">
-                    <svg class="w-6 h-6 text-purple-600 flex-shrink-0 mr-3 mt-1" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    <svg class="w-6 h-6 text-purple-600 mr-3 mt-1" fill="none" stroke="currentColor" stroke-width="3"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                     Самовывоз – бесплатно из нашего магазина
                 </li>
                 <li class="flex items-start">
-                    <svg class="w-6 h-6 text-purple-600 flex-shrink-0 mr-3 mt-1" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    <svg class="w-6 h-6 text-purple-600 mr-3 mt-1" fill="none" stroke="currentColor" stroke-width="3"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                     Nova Posta – 5-7 дней
                 </li>
             </ul>
         </div>
+
+        <!-- Оплата справа -->
+        <div class="bg-purple-100 p-6 rounded-xl shadow-md">
+            <h3 class="text-2xl font-bold mb-4 text-purple-800">Оплата</h3>
+            <ul class="space-y-3 text-purple-800">
+                <li class="flex items-start">
+                    <svg class="w-6 h-6 text-purple-600 mr-3 mt-1" fill="none" stroke="currentColor" stroke-width="3"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Картой онлайн (VISA, MasterCard)
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-6 h-6 text-purple-600 mr-3 mt-1" fill="none" stroke="currentColor" stroke-width="3"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    При получении (наличными или картой)
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <!-- Возврат под двумя колонками -->
-    <div class="bg-orange-100 p-6 rounded-xl shadow-md max-w-3xl mx-auto">
-        <h3 class="text-2xl font-bold mb-3 text-orange-800 text-center">Возврат</h3>
-        <p class="text-orange-900 font-semibold text-center">
-            Вы можете вернуть товар в течение 14 дней при сохранении упаковки и чека.
-        </p>
+    <!-- Возврат -->
+    <div class="bg-yellow-100 p-6 rounded-xl shadow-md max-w-3xl mx-auto mt-10">
+        <h3 class="text-2xl font-bold mb-4 text-yellow-800 text-center">Возврат товара</h3>
+        <div class="flex items-start gap-4 text-yellow-900">
+            <svg class="w-8 h-8 text-yellow-700 mt-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h11M3 14h7M17 16l4-4m0 0l-4-4m4 4H9" />
+            </svg>
+            <p class="text-lg font-medium">
+                Вы можете <span class="underline font-semibold">вернуть товар в течение 14 дней</span> при наличии чека и оригинальной упаковки.
+                Мы гарантируем прозрачные и честные условия возврата.
+            </p>
+        </div>
     </div>
 </section>

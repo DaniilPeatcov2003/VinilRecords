@@ -1,4 +1,4 @@
-﻿﻿@{
+﻿@{
     ViewData["Title"] = "Vinyl Records Store";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -10,107 +10,92 @@
     </div>
 }
 
+<!-- Заголовок -->
+<h1 class="text-6xl font-extrabold p-8 text-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
+    Vinyl Records
+</h1>
+
+<!-- Поиск -->
+<div class="flex justify-center p-4">
+    <input id="searchInput" type="text" placeholder="Поиск альбомов..." class="w-full max-w-xl px-4 py-2 rounded-lg shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-400" oninput="filterAlbums()" />
+</div>
+
+<!-- Промо-блоки -->
 <section class="p-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div class="bg-orange-200 p-6 rounded-xl">
-        <h2 class="text-3xl font-bold">Скидка 50%</h2>
-        <p class="mt-2">Сезонная распродажа на все виниловые пластинки</p>
+    <!-- Скидка -->
+    <div class="p-6 rounded-xl shadow-md transition duration-300 transform hover:scale-105 hover:shadow-2xl cursor-pointer" style="background: linear-gradient(135deg, #f97316, #ef4444); color: white;">
+        <h2 class="text-3xl font-bold drop-shadow-md">Скидка 50%</h2>
+        <p class="mt-2 font-medium drop-shadow-sm">Сезонная распродажа на все виниловые пластинки</p>
     </div>
-    <div class="bg-blue-200 p-6 rounded-xl">
-        <h2 class="text-3xl font-bold">Новинки</h2>
-        <p class="mt-2">Ознакомьтесь с нашей последней коллекцией винила</p>
+
+    <!-- Новинки -->
+    <div class="p-6 rounded-xl shadow-md transition duration-300 transform hover:scale-105 hover:shadow-2xl cursor-pointer" style="background: linear-gradient(135deg, #1e40af, #2563eb); color: white;">
+        <h2 class="text-3xl font-bold drop-shadow-md">Новинки</h2>
+        <p class="mt-2 drop-shadow-sm">Ознакомьтесь с нашей последней коллекцией винила</p>
     </div>
-    <div class="bg-yellow-200 p-6 rounded-xl">
-        <h2 class="text-3xl font-bold">Классические хиты</h2>
-        <p class="mt-2">Неподвластные времени виниловые пластинки для каждого коллекционера</p>
+
+    <!-- Хиты -->
+    <div class="p-6 rounded-xl shadow-md transition duration-300 transform hover:scale-105 hover:shadow-2xl cursor-pointer" style="background: linear-gradient(135deg, #b45309, #ca8a04); color: white;">
+        <h2 class="text-3xl font-bold drop-shadow-md">Классические хиты</h2>
+        <p class="mt-2 drop-shadow-sm">Неподвластные времени виниловые пластинки для каждого коллекционера</p>
     </div>
 </section>
 
-<section class="p-8">
-    <h2 class="text-2xl font-bold mb-4">Рок</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album1.jpg" alt="Album 1" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Гранатовый альбом</h3>
-            <p class="text-gray-600">Сплин</p>
-            <p class="text-gray-600">$20</p>
-        </div>
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album2.jpg" alt="Album 2" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Горизонт событий</h3>
-            <p class="text-gray-600">Би-2</p>
-            <p class="text-gray-600">$25</p>
-        </div>
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album3.jpg" alt="Album 3" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Всё что вокруг</h3>
-            <p class="text-gray-600">Нервы</p>
-            <p class="text-gray-600">$18</p>
-        </div>
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album4.jpg" alt="Album 4" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Земфира</h3>
-            <p class="text-gray-600">Земфира</p>
-            <p class="text-gray-600">$22</p>
-        </div>
-    </div>
-</section>
+<!-- Секция альбомов -->
+@{
+    var categories = new[]
+    {
+        new { Title = "Рок", Gradient = "from-purple-600 via-pink-600 to-red-600", Albums = new[] {
+            new { Name = "Гранатовый альбом", Artist = "Сплин", Price = "$20", Image = "album1.jpg" },
+            new { Name = "Горизонт событий", Artist = "Би-2", Price = "$25", Image = "album2.jpg" },
+            new { Name = "Всё что вокруг", Artist = "Нервы", Price = "$18", Image = "album3.jpg" },
+            new { Name = "Земфира", Artist = "Земфира", Price = "$22", Image = "album4.jpg" },
+        }},
+        new { Title = "Хип-хоп", Gradient = "from-yellow-600 via-red-500 to-pink-500", Albums = new[] {
+            new { Name = "Hard Reboot 3.0", Artist = "Noize MC", Price = "$15", Image = "album6.jpg" },
+            new { Name = "Выход в город", Artist = "Noize MC", Price = "$25", Image = "album5.jpg" },
+            new { Name = "Hattori", Artist = "Miyagi & Эндшпиль", Price = "$25", Image = "album7.png" },
+            new { Name = "Трёхмерные рифмы", Artist = "Каста", Price = "$25", Image = "album8.png" },
+        }},
+        new { Title = "Поп", Gradient = "from-blue-600 via-indigo-500 to-purple-500", Albums = new[] {
+            new { Name = "Здравствуй, Это Я…", Artist = "Руки Вверх", Price = "$30", Image = "album9.png" },
+            new { Name = "Босоногий мальчик", Artist = "Леонид Агутин", Price = "$25", Image = "album10.png" },
+            new { Name = "Небы", Artist = "Ёлка", Price = "$25", Image = "album11.png" },
+            new { Name = "Солнце", Artist = "Ани Лорак", Price = "$25", Image = "album12.png" },
+        }},
+    };
+}
 
-<section class="p-8">
-    <h2 class="text-2xl font-bold mb-4">Хип-хоп</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album6.jpg" alt="Album 3" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Hard Reboot 3.0</h3>
-            <p class="text-gray-600">Noize MC</p>
-            <p class="text-gray-600">$15</p>
+@foreach (var category in categories)
+{
+    <section class="p-8">
+        <h2 class="text-6xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r @category.Gradient">
+            @category.Title
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            @foreach (var album in category.Albums)
+            {
+                <div class="p-4 rounded-2xl shadow-xl transition duration-300 transform hover:scale-105 hover:shadow-2xl cursor-pointer bg-white"
+                     data-name="@album.Name.ToLower()">
+                    <img src="/Content/Images/@album.Image" alt="@album.Name" class="w-full rounded-md mb-3" />
+                    <h3 class="text-xl font-bold text-gray-800">@album.Name</h3>
+                    <p class="text-gray-600 text-sm">@album.Artist</p>
+                    <p class="text-gray-900 font-semibold text-lg">@album.Price</p>
+                </div>
+            }
         </div>
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album5.jpg" alt="Album 3" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Выход в город</h3>
-            <p class="text-gray-600">Noize MC</p>
-            <p class="text-gray-600">$25</p>
-        </div>
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album7.png" alt="Album 3" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Hattori</h3>
-            <p class="text-gray-600">Miyagi & Эндшпиль</p>
-            <p class="text-gray-600">$25</p>
-        </div>
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album8.png" alt="Album 3" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Трёхмерные рифмы</h3>
-            <p class="text-gray-600">Каста</p>
-            <p class="text-gray-600">$25</p>
-        </div>
-    </div>
-</section>
+    </section>
+}
 
-<section class="p-8">
-    <h2 class="text-2xl font-bold mb-4">Поп</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album9.png" alt="Album 3" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Здравствуй, Это Я…</h3>
-            <p class="text-gray-600">Руки Вверх</p>
-            <p class="text-gray-600">$30</p>
-        </div>
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album10.png" alt="Album 3" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Босоногий мальчик</h3>
-            <p class="text-gray-600">Леонид Агутин</p>
-            <p class="text-gray-600">$25</p>
-        </div>
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album11.png" alt="Album 3" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Небы</h3>
-            <p class="text-gray-600">Ёлка</p>
-            <p class="text-gray-600">$25</p>
-        </div>
-        <div class="p-4 shadow-lg rounded-lg">
-            <img src="/Content/Images/album12.png" alt="Album 3" class="w-full rounded-md" />
-            <h3 class="mt-2 font-semibold">Солнце</h3>
-            <p class="text-gray-600">Ани Лорак</p>
-            <p class="text-gray-600">$25</p>
-        </div>
-    </div>
-</section>
+<!-- Поиск альбомов (JS) -->
+<script>
+    function filterAlbums() {
+        const query = document.getElementById("searchInput").value.toLowerCase();
+        const albums = document.querySelectorAll("[data-name]");
+
+        albums.forEach(album => {
+            const name = album.dataset.name;
+            album.style.display = name.includes(query) ? "block" : "none";
+        });
+    }
+</script>
