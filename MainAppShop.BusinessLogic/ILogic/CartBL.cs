@@ -10,21 +10,16 @@ using System.Threading.Tasks;
 
 namespace MainAppShop.BusinessLogic.ILogic
 {
-    public class ProductBl : UserApi, IProduct
+    public class CartBl :UserApi, ICart
     {
-        public bool IsProductValid(int id)
+        public List<Product> GetAllProducts()
         {
-            return IsProductValidAction(id);
+            throw new NotImplementedException();
         }
 
-        public List<Product> GetAll(string search = null)
-        { 
-            return GetAllAction(search);
-        }
-
-        public Product GetById(int id)
+        public Product GetProductById(int id)
         {
-            return GetByIdAction(id);
+            throw new NotImplementedException();
         }
     }
 }

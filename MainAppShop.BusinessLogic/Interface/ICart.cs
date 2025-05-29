@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace MainAppShop.BusinessLogic.Interface
 {
-    public interface IProduct
+    public interface ICart
     {
-        bool IsProductValid(int id);
-        List<Product> GetAll(string search = null);
-        Product GetById(int id);
+        List<Product> GetAllProducts();
+        Product GetProductById(int id);
     }
 }

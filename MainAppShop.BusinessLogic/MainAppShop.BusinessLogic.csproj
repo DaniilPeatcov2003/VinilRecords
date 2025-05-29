@@ -46,6 +46,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,12 +56,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic.cs" />
+    <Compile Include="Core\User\AccountService.cs" />
+    <Compile Include="Core\User\AdminApi.cs" />
+    <Compile Include="Core\User\BaseApi.cs" />
     <Compile Include="Core\User\ULoginData.cs" />
     <Compile Include="Core\User\UserApi.cs" />
     <Compile Include="DBModel\Seed\UserContext.cs" />
+    <Compile Include="DBModel\SessionContext.cs" />
+    <Compile Include="ILogic\CartBL.cs" />
     <Compile Include="ILogic\PaymentBL.cs" />
     <Compile Include="ILogic\ProductBl.cs" />
     <Compile Include="ILogic\UserBL.cs" />
+    <Compile Include="Interface\IAccountService.cs" />
+    <Compile Include="Interface\IAdminService.cs" />
+    <Compile Include="Interface\ICart.cs" />
     <Compile Include="Interface\IPayment.cs" />
     <Compile Include="Interface\IProduct.cs" />
     <Compile Include="Interface\IUser.cs" />

@@ -1,45 +1,38 @@
-﻿using MainAppShop.Domain.Entities.User;
-using MainAppShop.BusinessLogic.DBModel.Seed;
-using System;
-using System.Net;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.UI.WebControls;
+﻿using MainAppShop.BusinessLogic;
+using MainAppShop.BusinessLogic.Core.Admin;
+using MainAppShop.Domain.Entities.User;
+using ProjectWeb.Extensions;
 using ProjectWeb.Filters;
+using System;
+using System.Linq;
+using System.Net;
+using System.Web.Mvc;
 
 namespace ProjectWeb.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
-        private UserContext db = new UserContext();
+        private readonly AdminApi _adminApi;
 
-        // Только для админа
-        [Authorize]
+        public AdminController()
+        {
+            var bl = new BusinessLogic();
+            _adminApi = bl.GetAdminApi();
+        }
+
         public ActionResult Index()
         {
-            var userRole = Session["UserRole"]?.ToString(); // или localStorage через JS
+            var userRole = Session["UserRole"]?.ToString();
             if (userRole != "Admin")
                 return RedirectToAction("Login", "Account");
 
             return View();
         }
-
+        [RoleAuthorize("Admin")]
         public ActionResult Products(string searchTerm = null)
         {
-            var products = db.Products.AsQueryable();
-
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                products = products.Where(p =>
-                    p.Name.Contains(searchTerm) ||
-                    p.Artist.Contains(searchTerm));
-            }
-
-            return View(products.ToList());
+            var products = _adminApi.GetAllProducts(searchTerm);
+            return View(products);
         }
 
         public ActionResult Create()
@@ -52,29 +45,18 @@ namespace ProjectWeb.Controllers
         public ActionResult Create(Product product)
         {
             if (!ModelState.IsValid)
-            {
-                // Временный вывод ошибок в консоль/отладчик
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                foreach (var error in errors)
-                {
-                    System.Diagnostics.Debug.WriteLine(error.ErrorMessage);
-                }
-
                 return View(product);
-            }
 
-            db.Products.Add(product);
-            db.SaveChanges();
+            _adminApi.CreateProduct(product);
             return RedirectToAction("Products");
         }
-
 
         public ActionResult Edit(int? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var product = db.Products.Find(id);
+            var product = _adminApi.GetProductById(id.Value);
             if (product == null)
                 return HttpNotFound();
 
@@ -87,8 +69,7 @@ namespace ProjectWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(product).State = EntityState.Modified;
-                db.SaveChanges();
+                _adminApi.UpdateProduct(product);
                 return RedirectToAction("Products");
             }
             return View(product);
@@ -96,38 +77,27 @@ namespace ProjectWeb.Controllers
 
         public ActionResult Delete(int id)
         {
-            var product = db.Products.Find(id);
-            if (product != null)
-            {
-                db.Products.Remove(product);
-                db.SaveChanges();
-            }
+            _adminApi.DeleteProduct(id);
             return RedirectToAction("Products");
+        }
+        [RoleAuthorize("Admin")]
+        public ActionResult UserList()
+        {
+            var users = _adminApi.GetAllUsers();
+            return View(users);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteUser(int id)
+        {
+            _adminApi.DeleteUser(id);
+            return RedirectToAction("UserList");
         }
 
         [RoleAuthorize("Admin")]
         public ActionResult AdminDashboard()
         {
             return View("~/Views/Admin/AdminDashboard.cshtml");
-        }
-
-        [HttpPost]
-        public ActionResult DeleteUser(int id)
-        {
-            var user = db.Users.Find(id);
-            if (user != null)
-            {
-                db.Users.Remove(user);
-                db.SaveChanges();
-            }
-            return RedirectToAction("UserList");
-        }
-
-
-        public ActionResult UserList()
-        {
-            var users = db.Users.ToList();
-            return View(users);
         }
     }
 }

@@ -3,7 +3,7 @@
 @{
     var isLoggedIn = User.Identity.IsAuthenticated;
     var login = User.Identity.Name;
-    var role = Request.Cookies["UserInfo"]?["Role"];
+    var role = Request.Cookies["TWEB-D"]?["Role"];
 }
 
 <!DOCTYPE html>
@@ -32,11 +32,13 @@
                 <li><a href="/Home/Contacts" class="hover:text-blue-500">Контакты</a></li>
             </ul>
 
-            @if (isLoggedIn)
+            @if (Request.Cookies["TWEB-D"] != null)
             {
-                <span class="text-sm text-gray-700 mr-2">Здравствуйте, @login!</span>
-                <a href="#" onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Выйти</a>
+                <a href="@Url.Action("Logout", "Account")" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                    Выйти
+                </a>
             }
+
             else
             {
                 <a href="@Url.Action("Register", "Account")" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Регистрация</a>

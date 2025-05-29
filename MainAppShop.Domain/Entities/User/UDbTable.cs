@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MainAppShop.Domain.Entities.User;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;

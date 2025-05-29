@@ -15,17 +15,25 @@ using ProjectWeb.Filters;
 using MainAppShop.Domain.User.Auth;
 using System.Web;
 using ProjectWeb.Helpers;
+using MainAppShop.BusinessLogic;
+using ProjectWeb.Extensions;
 
 namespace ProjectWeb.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        private readonly UserContext db = new UserContext();
+        private readonly IUser _userBL;
+
+        public AccountController()
+        {
+            var bl = new BusinessLogic();
+            _userBL = bl.GetUserBl();
+        }
 
         [HttpGet]
         public ActionResult Dashboard()
         {
-            HttpCookie userInfoCookie = Request.Cookies["UserInfo"];
+            HttpCookie userInfoCookie = Request.Cookies["TWEB-D"];
             if (userInfoCookie != null)
             {
                 string login = userInfoCookie["Login"];
@@ -42,7 +50,7 @@ namespace ProjectWeb.Controllers
             return RedirectToAction("Login");
         }
 
-        [RoleAuthorize("User", "Admin")]
+        [RoleAuthorize("User")]
         public ActionResult UserDashboard()
         {
             ViewBag.Login = User.Identity.Name;
@@ -65,38 +73,43 @@ namespace ProjectWeb.Controllers
                 return View("~/Views/Home/Login.cshtml");
             }
 
-            using (UserContext db = new UserContext())
+            var user = new UDbTable()
             {
-                var user = db.Users.FirstOrDefault(u => u.Email == login && u.Password == password);
-                if (user != null)
-                {
-                    var authTicket = new FormsAuthenticationTicket(
-                        1,
-                        user.Email,
-                        DateTime.Now,
-                        DateTime.Now.AddMinutes(30),
-                        false,
-                        user.Level.ToString(),
-                        FormsAuthentication.FormsCookiePath
-                    );
+                Email = login,
+                Password = password,
+            };
 
-                    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                    HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                    Response.Cookies.Add(authCookie);
-
-                    HttpCookie userCookie = new HttpCookie("UserInfo");
-                    userCookie["Login"] = user.Name;
-                    userCookie["Role"] = user.Level.ToString();
-                    userCookie.Expires = DateTime.Now.AddDays(7);
-                    Response.Cookies.Add(userCookie);
-
-                    TempData["SuccessMessage"] = "Вы успешно вошли в систему!";
-                    return RedirectToAction("Index", "Home");
-                }
+            if (!_userBL.AuthentificateUser(user))
+            {
+                ViewBag.Error = "Неверный логин или пароль.";
+                return View("~/Views/Home/Login.cshtml");
             }
 
-            ViewBag.Error = "Неверный логин или пароль.";
-            return View("~/Views/Home/Login.cshtml");
+            var role = _userBL.GetUserRole(login);
+            var name = _userBL.GetUserName(login); 
+
+            var authTicket = new FormsAuthenticationTicket(
+                1,
+                user.Email,
+                DateTime.Now,
+                DateTime.Now.AddMinutes(30),
+                false,
+                role,
+                FormsAuthentication.FormsCookiePath
+            );
+
+            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+            HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+            Response.Cookies.Add(authCookie);
+
+            HttpCookie userCookie = new HttpCookie("TWEB-D");
+            userCookie["Login"] = name;
+            userCookie["Role"] = role;
+            userCookie.Expires = DateTime.Now.AddDays(7);
+            Response.Cookies.Add(userCookie);
+
+            TempData["SuccessMessage"] = "Вы успешно вошли в систему!";
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -112,55 +125,28 @@ namespace ProjectWeb.Controllers
             if (!ModelState.IsValid)
                 return View("~/Views/Home/Register.cshtml", model);
 
-            var existingUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
-            if (existingUser != null)
+            var config = new AutoMapper.MapperConfiguration(cfg => cfg.CreateMap<RegisterViewModel, UDbTable>());
+            var mapper = config.CreateMapper();
+            var udb = mapper.Map<UDbTable>(model);
+
+            if(_userBL.Register(udb))
+            { 
+                TempData["SuccessMessage"] = "Регистрация прошла успешно!";
+                return RedirectToAction("Index", "Home");
+            }
+            else
             {
-                ModelState.AddModelError("Email", "Пользователь с таким email уже существует.");
                 return View("~/Views/Home/Register.cshtml", model);
             }
-
-            var user = new UDbTable
-            {
-                Name = model.Name,
-                Email = model.Email,
-                Password = model.Password,
-                LastLogin = DateTime.Now,
-                LasIp = Request.UserHostAddress,
-                Level = URole.User
-            };
-
-            db.Users.Add(user);
-            db.SaveChanges();
-
-            var authTicket = new FormsAuthenticationTicket(
-                1,
-                user.Email,
-                DateTime.Now,
-                DateTime.Now.AddMinutes(30),
-                false,
-                user.Level.ToString()
-            );
-            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-            HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-            Response.Cookies.Add(authCookie);
-
-            HttpCookie userCookie = new HttpCookie("UserInfo");
-            userCookie["Login"] = user.Name;
-            userCookie["Role"] = user.Level.ToString();
-            userCookie.Expires = DateTime.Now.AddDays(7);
-            Response.Cookies.Add(userCookie);
-
-            TempData["SuccessMessage"] = "Регистрация прошла успешно!";
-            return RedirectToAction("Index", "Home");
         }
 
 
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut(); 
-            if (Request.Cookies["UserInfo"] != null)
+            if (Request.Cookies["TWEB-D"] != null)
             {
-                var cookie = new HttpCookie("UserInfo");
+                var cookie = new HttpCookie("TWEB-D");
                 cookie.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(cookie);
             }

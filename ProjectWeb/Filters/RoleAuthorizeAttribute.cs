@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ProjectWeb.Extensions;
 
 namespace ProjectWeb.Filters
 {
@@ -17,7 +17,7 @@ namespace ProjectWeb.Filters
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            var roleCookie = httpContext.Request.Cookies["UserInfo"];
+            var roleCookie = httpContext.Request.Cookies["TWEB-D"];
             if (roleCookie != null)
             {
                 string role = roleCookie["Role"];
